@@ -44,13 +44,14 @@ static void	get_hit(ENGINE *wolf)
 		{
 			RAYDIST.x += RAYDELTA.x;
 			MAP_X += STEPX;
-			SIDE = 0;
+			SIDE = ((DIR.x > 0 && DIR.y > 0) ? 1 : 0);
 		}
 		else
 		{
 			RAYDIST.y += RAYDELTA.y;
 			MAP_Y += STEPY;
-			SIDE = 1;
+			SIDE = ((DIR.y > 0 && DIR.x > 0) ? 2 : 3);
+		
 		}
 		if (BLOCK[MAP_X][MAP_Y] > 0)
 			HIT = 1;
@@ -59,7 +60,7 @@ static void	get_hit(ENGINE *wolf)
 
 static void	get_lines_height(ENGINE *wolf)
 {
-	if (SIDE == 0)
+	if (SIDE == 0 || SIDE == 1)
 		WALLDIST = (MAP_X - POS.x + (1 - STEPX) / 2) / RAYDIR.x;
 	else
 		WALLDIST = (MAP_Y - POS.y + (1 - STEPY) / 2) / RAYDIR.y;

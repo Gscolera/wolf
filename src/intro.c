@@ -38,11 +38,10 @@ static void	fade_in(ENGINE *wolf, IMAGE *image)
 	{	
 		rect.x	= (WINDOW_H - IMAGE_H) / 2;
 		rect.y	= (WINDOW_W - IMAGE_W) / 2;
-		rect.h	= IMAGE_H + rect.x;
-		rect.w	= IMAGE_W + rect.y;
 		fade_image(image, &faded, scale);
 		wolf_render_image(wolf, &faded, &rect);
 		SDL_UpdateWindowSurface(WINDOW);
+		SDL_Delay(5);
 	}
 	free(faded.pixels);
 }
@@ -62,11 +61,10 @@ static void	fade_out(ENGINE *wolf, IMAGE *image)
 	{
 		rect.x	= (WINDOW_H - IMAGE_H) / 2;
 		rect.y	= (WINDOW_W - IMAGE_W) / 2;
-		rect.h	= IMAGE_H + rect.x;
-		rect.w	= IMAGE_W + rect.y;
 		fade_image(image, &faded, scale);
 		wolf_render_image(wolf, &faded, &rect);
 		SDL_UpdateWindowSurface(WINDOW);
+		SDL_Delay(5);
 	}
 	free(faded.pixels);
 }
@@ -74,6 +72,7 @@ static void	fade_out(ENGINE *wolf, IMAGE *image)
 void		show_intro(ENGINE *wolf)
 {
 	 fade_in(wolf, LOGO);
+	 SDL_Delay(1000);
 	 fade_out(wolf, LOGO);
 	 free(LOGO->pixels);
 	 free(LOGO);

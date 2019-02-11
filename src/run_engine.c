@@ -4,11 +4,11 @@ static void	init_engine(ENGINE *wolf)
 {
 	WINDOW		= NULL;
 	SCREEN		= NULL;
-	WALL		= NULL;
 	BLOCK		= NULL;
 	LOGO 		= NULL;
 	BGMUSIC		= NULL;
 	SHOTSOUND	= NULL;
+	VOLUME		= 50;
 	MAP_W		= 0;
 	MAP_H		= 0;
 	PLANE.x 	= 0.0;
@@ -23,18 +23,26 @@ static void	init_engine(ENGINE *wolf)
 static void	load_textures(ENGINE *wolf)
 {
 	LOGO	= read_tga("images/logo.tga");
-	WALL	= read_tga("images/bricks_01.tga");
+	WALL[0]	= read_tga("images/bricks_01.tga");
+	WALL[1]	= read_tga("images/text1.tga");
+	WALL[2]	= read_tga("images/text2.tga");
+	WALL[3]	= read_tga("images/text3.tga");
+	GUN = read_tga("images/weapon.tga");
 
 }
 
 static void	load_sounds(ENGINE *wolf)
 {
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+	perror(Mix_GetError());
+
 	BGMUSIC = Mix_LoadMUS("sounds/Klint - Diamond.mp3");
+	perror(Mix_GetError());
 	SHOTSOUND = Mix_LoadWAV("sounds/Gun+Shot2.wav");
 	Mix_VolumeMusic(VOLUME);
-	Mix_VolumeChunk(SHOTSOUND, 5);
+	Mix_VolumeChunk(SHOTSOUND, 50);
 	Mix_PlayMusic(BGMUSIC, -1);
+	perror(Mix_GetError());
 }
 
 void		run_engine(ENGINE *wolf)
@@ -58,8 +66,8 @@ void		run_engine(ENGINE *wolf)
 	}
 	if (wolf->power)
 		load_textures(wolf);
-	//   if (wolf->power)
-	//   	load_sounds(wolf);
+	if (wolf->power)
+		load_sounds(wolf);
 	SCREEN_PTR = SCREEN->pixels;
 	SDL_ShowCursor(SDL_DISABLE);
 	SDL_UpdateWindowSurface(WINDOW);

@@ -1,14 +1,20 @@
 #ifndef WOLF3D_H
-# define WOLF3D_h
+# define WOLF3D_H
 
+# ifdef __linux__
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_mixer.h>
+# else
+# include "SDL.h"
+# include "SDL_mixer.h"
+# endif
+
 # include "tga_reader.h"
 # include <math.h>
 
 # define ENGINE		t_engine
-# define WINDOW_W	1200
-# define WINDOW_H	800
+# define WINDOW_W	1900
+# define WINDOW_H	1200
 # define FPS		60
 
 /*
@@ -25,6 +31,7 @@
 # define LOGO		wolf->texture.logo
 # define WALL		wolf->texture.wall
 # define BG			wolf->texture.bg
+# define GUN		wolf->texture.gun
 # define IMAGE_H	image->height
 # define IMAGE_W	image->width
 # define IMAGE_L	image->length
@@ -132,8 +139,8 @@ typedef struct		s_ray
 	double			wall_dist;
 	short			stepx;
 	short			stepy;
-	_Bool			hit;
-	_Bool			side;
+	bool			hit;
+	U8				side;
 }					t_ray;
 
 typedef struct		s_map
@@ -148,7 +155,8 @@ typedef struct		s_map
 typedef struct		s_texture
 {
 	IMAGE			*logo;
-	IMAGE			*wall;
+	IMAGE			*wall[4];
+	IMAGE			*gun;
 	IMAGE			*bg;
 	PIXEL			*ptr;
 	U8				type;
@@ -167,6 +175,7 @@ typedef struct		s_engine
 	RAY				ray;
 	MAP				map;
 	MOUSE			mouse;
+	double			frame_time;
 	bool			power;
 	
 }					t_engine;

@@ -11,10 +11,14 @@ static void	stop_sounds(ENGINE *wolf)
 
 void		stop_engine(ENGINE *wolf)
 {
-	if (WALL)
+	
+	int i;
+
+	i = 4;
+	while (i--)
 	{
-		free(WALL->pixels);
-		free(WALL);
+		free(WALL[i]->pixels);
+		free(WALL[i]);
 	}
 	if (BLOCK)
 	{
