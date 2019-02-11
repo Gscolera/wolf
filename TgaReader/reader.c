@@ -28,20 +28,16 @@ static bool	read_image_info(TGA *tga)
 	tga->image->height 		= (tga->ptr[14] | tga->ptr[15] << 8);
 	tga->ptr 				+= 18 + id_length;
 	tga->image->length 		= tga->image->width * tga->image->height;
-	if (!(tga->image->pixels = (PIXEL *)malloc(sizeof(PIXEL) * tga->image->length)))
+	if (!(tga->image->pixels = (U32 *)malloc(sizeof(U32) * tga->image->length)))
 		return (mem_error(tga));
 	return (1);
 }
 
-static PIXEL	get_pix_values(TGA *tga)
+static U32	get_pix_values(TGA *tga)
 {
-	PIXEL	pixel;
-
-	pixel.a = tga->ptr[3];
-	pixel.r = tga->ptr[2];
-	pixel.g = tga->ptr[1];
-	pixel.b = tga->ptr[0];
-	return (pixel);
+	
+	return (tga->ptr[3] << 24 | tga->ptr[2] << 16 
+					| tga->ptr[1] << 8 | tga->ptr[0]);
 }
 
 static void	read_data(TGA *tga)

@@ -13,8 +13,8 @@
 # include <math.h>
 
 # define ENGINE		t_engine
-# define WINDOW_W	1900
-# define WINDOW_H	1200
+# define WINDOW_W	1200
+# define WINDOW_H	800
 # define FPS		60
 
 /*
@@ -40,6 +40,8 @@
 # define COLHEIGHT	wolf->texture.colheight
 # define DRAWSTART	wolf->texture.drawstart
 # define DRAWEND	wolf->texture.drawend
+# define TEX_X		wolf->texture.tex_x
+# define TEX_Y		wolf->texture.tex_y
 
 /*
 ********************EVENT DEFINITIONS***************************************
@@ -73,6 +75,8 @@
 # define PLANE		wolf->player.plane
 # define MVSPEED	wolf->player.mvspeed
 # define RTSPEED	wolf->player.rtspeed
+# define CX			wolf->player.cx
+# define CY			wolf->player.cy
 /*
 ***************RAY DEFINITIONS***************************************
 */
@@ -86,6 +90,7 @@
 # define SIDE			wolf->ray.side
 # define STEPX			wolf->ray.stepx
 # define STEPY			wolf->ray.stepy
+# define WALL_X			wolf->ray.wallx
 /*
 ***************MOUSE DEFINITIONS***************************************
 */
@@ -93,12 +98,14 @@
 # define MOUSEX			wolf->mouse.newx
 # define MOUSEPX		wolf->mouse.prevx
 # define MOUSEDLT		wolf->mouse.delta
+# define MOUSE_STATE	wolf->mouse.state
 
 typedef	struct		s_mouse
 {
 	double			newx;
 	double			prevx;
 	double			delta;
+	bool			state;
 }					t_mouse;
 
 typedef struct		s_window
@@ -112,7 +119,7 @@ typedef struct		s_sound
 {
 	Mix_Music		*bgmusic;
 	Mix_Chunk		*shot;
-	short			volume;
+	U32				volume;
 }					t_sound;
 
 typedef	struct		s_coords
@@ -127,7 +134,9 @@ typedef struct		s_player
 	COORDS			dir;
 	COORDS			plane;
 	double			mvspeed;	
-	double			rtspeed;	
+	double			rtspeed;
+	double			cx;
+	double			cy;
 }					t_player;
 
 typedef struct		s_ray
@@ -136,6 +145,7 @@ typedef struct		s_ray
 	COORDS			dist;
 	COORDS			delta_dist;
 	double			camera;
+	double			wallx;
 	double			wall_dist;
 	short			stepx;
 	short			stepy;
@@ -158,7 +168,9 @@ typedef struct		s_texture
 	IMAGE			*wall[4];
 	IMAGE			*gun;
 	IMAGE			*bg;
-	PIXEL			*ptr;
+	U32				*ptr;
+	U32				tex_x;
+	U32				tex_y;
 	U8				type;
 	short			colheight;
 	short			drawstart;

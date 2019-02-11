@@ -20,44 +20,59 @@ static void	wolf_rotate(ENGINE *wolf)
 static void	wolf_move(ENGINE *wolf, int key)
 {
 	MVSPEED = wolf->frame_time * 5.0;
-	double kx;
-	double ky;
-	kx = ((DIR.x > 0) ? 0.1 : -0.1);
-	ky = ((DIR.y > 0) ? 0.1 : -0.1);
-	ft_printf("DIRX %f DIRY \t%f\n", DIR.x, DIR.y);
+	
+	CX = ((DIR.x > 0) ? 0.1 : -0.1);
+	CY = ((DIR.y > 0) ? 0.1 : -0.1);
+	ft_printf("DIRX %f DIRY %f PLANE %f\n", DIR.x, DIR.y, PLANE.x);
 
 	if (key == SDLK_w)
 	{
-		if (!BLOCK[(short)(POS.x + DIR.x * MVSPEED + kx)][(short)POS.y])
+		if (!BLOCK[(short)(POS.x + DIR.x * MVSPEED + CX)][(short)POS.y])
 			POS.x += DIR.x * MVSPEED;
-		if (!BLOCK[(short)(POS.x)][(short)(POS.y + DIR.y * MVSPEED + ky)])
+		if (!BLOCK[(short)(POS.x)][(short)(POS.y + DIR.y * MVSPEED + CY)])
 			POS.y += DIR.y * MVSPEED;
 	}
 	if (key == SDLK_s)
 	{
-		if (BLOCK[(short)(POS.x - DIR.x * MVSPEED)][(short)POS.y] == 0)
+		if (!BLOCK[(short)(POS.x - DIR.x * MVSPEED)][(short)POS.y])
 			POS.x -= DIR.x * MVSPEED;
-		if (BLOCK[(short)(POS.x)][(short)(POS.y - DIR.y * MVSPEED)] == 0)
+		if (BLOCK[(short)(POS.x)][(short)(POS.y - DIR.y * MVSPEED)])
 			POS.y -= DIR.y * MVSPEED;
 	}
 	if (key == SDLK_a)
 	{
-		if (BLOCK[(short)(POS.x - PLANE.x * MVSPEED)][(short)POS.y] == 0)
+		if (!BLOCK[(short)(POS.x - PLANE.x * MVSPEED)][(short)POS.y])
 			POS.x -= PLANE.x * MVSPEED;
-		if (BLOCK[(short)POS.x][(short)(POS.y - PLANE.y * MVSPEED)] == 0)
+		if (!BLOCK[(short)POS.x][(short)(POS.y - PLANE.y * MVSPEED)])
 			POS.y -= PLANE.y * MVSPEED;
 	}
 	if (key == SDLK_d)
 	{
-		if (BLOCK[(short)(POS.x + PLANE.x * MVSPEED)][(short)POS.y] == 0)
+		if (!BLOCK[(short)(POS.x + PLANE.x * MVSPEED)][(short)POS.y])
 			POS.x += PLANE.x * MVSPEED;
-		if (BLOCK[(short)POS.x][(short)(POS.y + PLANE.y * MVSPEED)] == 0)
+		if (!BLOCK[(short)POS.x][(short)(POS.y + PLANE.y * MVSPEED)])
 			POS.y += PLANE.y * MVSPEED;
 	}
 	
 }
 
-void	parse_events(ENGINE *wolf)
+static void	wolf_turn_mouse(ENGINE *wolf)
+{
+	if (MOUSE_STATE)
+	{
+		SDL_ShowCursor(SDL_DISABLE);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		MOUSE_STATE = false;
+	}
+	else
+	{
+		SDL_ShowCursor(SDL_ENABLE);
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+		MOUSE_STATE = true;
+	}
+}
+
+void		parse_events(ENGINE *wolf)
 {
 	while (SDL_PollEvent(&EVENT))
 	{
@@ -65,9 +80,11 @@ void	parse_events(ENGINE *wolf)
 			wolf->power = false;
 		if (ETYPE == SDL_KEYDOWN)
 			wolf_move(wolf, KEY);
-		if (ETYPE == SDL_MOUSEMOTION)
+		if (ETYPE == SDL_MOUSEMOTION && !MOUSE_STATE)
 			wolf_rotate(wolf);
 		if (ETYPE == SDL_KEYDOWN && KEY == SDLK_p)
 			!Mix_PausedMusic() ? Mix_PauseMusic() : Mix_ResumeMusic();
+		if (ETYPE == SDL_KEYDOWN && KEY == SDLK_TAB)
+			wolf_turn_mouse(wolf);
 	}
 }

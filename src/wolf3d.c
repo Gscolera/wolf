@@ -1,10 +1,5 @@
 #include "wolf3d.h"
 
-U32		get_pixel(PIXEL pixel)
-{
-	return(pixel.r << 16 | pixel.g << 8 | pixel.b);
-}
-
 int		main(int argc, char **argv)
 {
 	ENGINE	wolf;

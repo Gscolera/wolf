@@ -7,18 +7,13 @@ static void	fade_image(IMAGE *image, IMAGE *faded, U8 scale)
 	i = 0;
 	while (i < image->length)
 	{
-		if (image->pixels[i].r  == 255)
+		if (image->pixels[i] & 0xFFFFFF == 0xFFFFFF)
 		{
-			faded->pixels[i].r = scale;
-			faded->pixels[i].g = scale;
-			faded->pixels[i++].b = scale;
+			faded->pixels[i++] = (U32)(scale << 16 | scale << 8 | scale);
 		}
 		else
-		{
-			faded->pixels[i].r = 0;
-			faded->pixels[i].g = 0;
-			faded->pixels[i++].b = 0;
-		}
+			faded->pixels[i++] = 0;
+		ft_printf("%d\n", i);
 	}
 
 }
@@ -33,7 +28,7 @@ static void	fade_in(ENGINE *wolf, IMAGE *image)
 	faded.width		= IMAGE_W;
 	faded.height	= IMAGE_H;
 	faded.length	= IMAGE_L;
-	faded.pixels	= (PIXEL *)malloc(sizeof(PIXEL) * image->length);
+	faded.pixels	= (U32 *)malloc(sizeof(U32) * image->length);
 	while (++scale < 255)
 	{	
 		rect.x	= (WINDOW_H - IMAGE_H) / 2;
@@ -56,7 +51,7 @@ static void	fade_out(ENGINE *wolf, IMAGE *image)
 	faded.width		= IMAGE_W;
 	faded.height	= IMAGE_H;
 	faded.length	= IMAGE_L;
-	faded.pixels	= (PIXEL *)malloc(sizeof(PIXEL) * image->length);
+	faded.pixels	= (U32 *)malloc(sizeof(U32) * image->length);
 	while (--scale > 0)
 	{
 		rect.x	= (WINDOW_H - IMAGE_H) / 2;

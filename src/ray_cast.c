@@ -44,13 +44,13 @@ static void	get_hit(ENGINE *wolf)
 		{
 			RAYDIST.x += RAYDELTA.x;
 			MAP_X += STEPX;
-			SIDE = ((DIR.x > 0 && DIR.y > 0) ? 1 : 0);
+			SIDE = ((DIR.x >= 0)  ? 1 : 0);
 		}
 		else
 		{
 			RAYDIST.y += RAYDELTA.y;
 			MAP_Y += STEPY;
-			SIDE = ((DIR.y > 0 && DIR.x > 0) ? 2 : 3);
+			SIDE = ((DIR.y >= 0) ? 2 : 3);
 		
 		}
 		if (BLOCK[MAP_X][MAP_Y] > 0)
@@ -80,8 +80,10 @@ void		ray_cast(ENGINE *wolf, U32 x)
 	get_step(wolf);
 	get_hit(wolf);
 	get_lines_height(wolf);
-	if (BLOCK[MAP_X][MAP_Y] == 1)
-		TEXTURE_T = 1;
-	else if (BLOCK[MAP_X][MAP_Y] == 2)
-		TEXTURE_T = 2;
+	if (SIDE == 0 || SIDE == 1)
+		WALL_X = POS.y + WALLDIST * RAYDIR.y;
+	else
+		WALL_X = POS.x + WALLDIST * RAYDIR.x;
+	WALL_X -= (int)(WALL_X);
+
 }

@@ -8,25 +8,18 @@
 
 # define TGA			t_tga
 # define IMAGE			t_image
-# define PIXEL			t_pixel
+
 
 typedef unsigned int 	U32;
 typedef unsigned char 	U8;
 
-typedef struct			s_pixel
-{
-	U8					r;
-	U8					g;
-	U8					b;
-	double				a;
-}						t_pixel;
 
 typedef struct			s_image
 {
 	U32					width;
 	U32					height;
 	U32					length;
-	PIXEL				*pixels;
+	U32					*pixels;
 }						t_image;
 
 typedef struct			s_tga

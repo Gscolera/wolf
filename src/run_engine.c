@@ -17,6 +17,7 @@ static void	init_engine(ENGINE *wolf)
 	POS.y 		= 3.0;
 	DIR.x 		= 1.0;
 	DIR.y 		= 0.0;
+	MOUSE_STATE	= false;
 	wolf->power = true;
 }
 
@@ -70,5 +71,6 @@ void		run_engine(ENGINE *wolf)
 		load_sounds(wolf);
 	SCREEN_PTR = SCREEN->pixels;
 	SDL_ShowCursor(SDL_DISABLE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	SDL_UpdateWindowSurface(WINDOW);
 }
