@@ -2,18 +2,26 @@
 
 void	wolf_render_image(ENGINE *wolf, IMAGE *image, SDL_Rect *rect)
 {
+	U32			offsetx;
+	U32			offsety;
+	U32			width;
+	U32			height;
 	U32			x;
 	U32			y;
 
 	x = 0;
-	while (x < WINDOW_W)
+	offsetx = ((rect) ? rect->x : 0);
+	width = ((rect) ? rect->w : WINDOW_W);
+	height = ((rect) ? rect->h : WINDOW_H);
+	while (x < width)
 	{
+		offsety = ((rect) ? rect->y : 0);
+		TEX_X = (double)image->width / width * x;
 		y = 0;
-		TEX_X = (double)image->width / WINDOW_W * x;
-		while (y < WINDOW_H)
+		while (y < height)
 		{
-			TEX_Y = (double)image->height / WINDOW_H * y;
-			SCREEN_PTR[y * WINDOW_W + x] = image->pixels[TEX_Y * image->width + TEX_X];
+			TEX_Y = (double)image->height / height * y;
+			SCREEN_PTR[(offsety + y) * WINDOW_W + x + offsetx] = image->pixels[TEX_Y * image->width + TEX_X];
 			y++;
 		}
 		x++;
@@ -22,7 +30,13 @@ void	wolf_render_image(ENGINE *wolf, IMAGE *image, SDL_Rect *rect)
 
 void	render_bg(ENGINE *wolf)
 {
-	wolf_render_image(wolf, SKY, NULL);
+	SDL_Rect	rect;
+
+	rect.x = 0;
+	rect.y = 0;
+	rect.h = WINDOW_H;
+	rect.w = WINDOW_W;
+	wolf_render_image(wolf, SKY, &rect);
 }
 
 void	render_walls(ENGINE *wolf)
@@ -41,6 +55,7 @@ void	render_walls(ENGINE *wolf)
 		  TEX_X = WALL[SIDE]->width - TEX_X - 1;
       	if((SIDE == 2 || SIDE == 3) &&  RAYDIR.y < 0)
 		  TEX_X = WALL[SIDE]->width - TEX_X - 1;
+		
 		while (DRAWSTART < DRAWEND)
 		{
 			d = DRAWSTART * 256 - WINDOW_H * 128 + COLHEIGHT * 128;
@@ -69,7 +84,7 @@ void	render_gun(ENGINE *wolf)
 void	render_wolf(ENGINE *wolf)
 {
 	render_bg(wolf);
-	//render_walls(wolf);
+	render_walls(wolf);
 	//render_gun(wolf);
 	SDL_UpdateWindowSurface(WINDOW);
 }
