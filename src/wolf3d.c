@@ -8,7 +8,7 @@ int		main(int argc, char **argv)
 	double	frame_time;
 
 	run_engine(&wolf);
-	get_tga_info("images/gun.tga");
+	get_tga_info("images/sky.tga");
 	read_map(&wolf, (argc > 1) ? argv[1] : "maps/level0");
 	//show_intro(&wolf);
 	while(wolf.power)

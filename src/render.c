@@ -5,16 +5,15 @@ void	wolf_render_image(ENGINE *wolf, IMAGE *image, SDL_Rect *rect)
 	U32			x;
 	U32			y;
 
-
 	x = 0;
 	while (x < WINDOW_W)
 	{
 		y = 0;
-		TEX_X = (double)LOGO->width / WINDOW_W * x;
+		TEX_X = (double)image->width / WINDOW_W * x;
 		while (y < WINDOW_H)
 		{
-			TEX_Y = (double)LOGO->height / WINDOW_H * y;
-			SCREEN_PTR[y * WINDOW_W + x] = LOGO->pixels[TEX_Y * LOGO->height + TEX_X];
+			TEX_Y = (double)image->height / WINDOW_H * y;
+			SCREEN_PTR[y * WINDOW_W + x] = image->pixels[TEX_Y * image->width + TEX_X];
 			y++;
 		}
 		x++;
@@ -23,23 +22,7 @@ void	wolf_render_image(ENGINE *wolf, IMAGE *image, SDL_Rect *rect)
 
 void	render_bg(ENGINE *wolf)
 {
-	U32			x;
-	U32			y;
-
-
-	x = 0;
-	while (x < WINDOW_W)
-	{
-		y = 0;
-		TEX_X = (double)LOGO->width / WINDOW_W * x;
-		while (y < WINDOW_H)
-		{
-			TEX_Y = (double)LOGO->height / WINDOW_H * y;
-			SCREEN_PTR[y * WINDOW_W + x] = LOGO->pixels[TEX_Y * LOGO->height + TEX_X];
-			y++;
-		}
-		x++;
-	}
+	wolf_render_image(wolf, SKY, NULL);
 }
 
 void	render_walls(ENGINE *wolf)
