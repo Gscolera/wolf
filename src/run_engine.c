@@ -29,7 +29,7 @@ static void	load_textures(ENGINE *wolf)
 	WALL[2]	= read_tga("images/text2.tga");
 	WALL[3]	= read_tga("images/text3.tga");
 	GUN = read_tga("images/weapon.tga");
-	SKY = read_tga("images/bg.tga");
+	SKY = read_tga("images/sky.tga");
 	GRASS = read_tga("images/grass.tga");
 
 }
