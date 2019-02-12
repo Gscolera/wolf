@@ -9,9 +9,8 @@ static void	stop_sounds(ENGINE *wolf)
 		Mix_FreeChunk(SHOTSOUND);
 }
 
-void		stop_engine(ENGINE *wolf)
+static void	free_textures(ENGINE *wolf)
 {
-	
 	int i;
 
 	i = 4;
@@ -20,6 +19,19 @@ void		stop_engine(ENGINE *wolf)
 		free(WALL[i]->pixels);
 		free(WALL[i]);
 	}
+	free(GUN->pixels);
+	free(GUN);
+	free(SKY->pixels);
+	free(SKY);
+	free(GRASS->pixels);
+	free(GRASS);
+}
+
+void		stop_engine(ENGINE *wolf)
+{
+	
+	
+	free_textures(wolf);
 	if (BLOCK)
 	{
 		while (MAP_H-- > 0)

@@ -2,23 +2,19 @@
 
 void	wolf_render_image(ENGINE *wolf, IMAGE *image, SDL_Rect *rect)
 {
-	U32	offset;
-	U32	dx;
-	U32	dy;
-	U32	x;
-	U32	y;
+	U32			x;
+	U32			y;
+
 
 	x = 0;
 	while (x < WINDOW_W)
 	{
-		dx = x * 256 - WINDOW_W * 128 + rect->w * 128;
-		TEX_X = ((dx * image->width) / rect->w) / 256;
 		y = 0;
-		while (y < rect->h)
+		TEX_X = (double)LOGO->width / WINDOW_W * x;
+		while (y < WINDOW_H)
 		{
-			dy = y * 256 - WINDOW_H * 128 + rect->h * 128;
-			TEX_Y = ((dy * image->height) / rect->h) / 256;
-			SCREEN_PTR[rect->x * WINDOW_W + y] = image->pixels[IMAGE_W * TEX_X + TEX_Y];
+			TEX_Y = (double)LOGO->height / WINDOW_H * y;
+			SCREEN_PTR[y * WINDOW_W + x] = LOGO->pixels[TEX_Y * LOGO->height + TEX_X];
 			y++;
 		}
 		x++;
@@ -29,23 +25,17 @@ void	render_bg(ENGINE *wolf)
 {
 	U32			x;
 	U32			y;
-	U32			dx;
-	U32			dy;
-	U32			size;
+
 
 	x = 0;
-	size = WINDOW_H * WINDOW_W;
 	while (x < WINDOW_W)
 	{
 		y = 0;
-		dx = x * 256 - WINDOW_W * 128 + WINDOW_W * 128;
-		TEX_X = ((dx * LOGO->width) / WINDOW_W) / 256;
-
+		TEX_X = (double)LOGO->width / WINDOW_W * x;
 		while (y < WINDOW_H)
 		{
-			dy = y * 256 - WINDOW_H * 128 + WINDOW_H * 128;
-			TEX_Y = ((dy * LOGO->height) / WINDOW_H) / 256;
-			SCREEN_PTR[x * WINDOW_H + y] = LOGO->pixels[TEX_Y * LOGO->width + TEX_X];
+			TEX_Y = (double)LOGO->height / WINDOW_H * y;
+			SCREEN_PTR[y * WINDOW_W + x] = LOGO->pixels[TEX_Y * LOGO->height + TEX_X];
 			y++;
 		}
 		x++;

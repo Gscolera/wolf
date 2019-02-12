@@ -30,7 +30,8 @@
 # define TEXTURE	t_texture
 # define LOGO		wolf->texture.logo
 # define WALL		wolf->texture.wall
-# define BG			wolf->texture.bg
+# define SKY		wolf->texture.sky
+# define GRASS		wolf->texture.grass
 # define GUN		wolf->texture.gun
 # define IMAGE_H	image->height
 # define IMAGE_W	image->width
@@ -167,7 +168,8 @@ typedef struct		s_texture
 	IMAGE			*logo;
 	IMAGE			*wall[4];
 	IMAGE			*gun;
-	IMAGE			*bg;
+	IMAGE			*sky;
+	IMAGE			*grass;
 	U32				*ptr;
 	U32				tex_x;
 	U32				tex_y;
